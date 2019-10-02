@@ -1,11 +1,11 @@
 How to get MySQL database connected to start.vaadin.com - project
 =================================================================
 
-This tutorial mainly concentrates mainly on how to wire your web application to `MySQL` database so you can Create, Read, Update and Delete (CRUD) things in database via `Vaadin` web application. Idea is to show you how to connect a template downloaded from https://start.vaadin.com to a database so you can replicate it to your own needs. This is not about the best practices (for `Vaadin`, `Spring` or `MySQL`) but to get you started fast.
+This tutorial mainly concentrates on how to wire your web application to `MySQL` database so you can Create, Read, Update and Delete (CRUD) information in database via `Vaadin` web application. Idea is to show you how to connect a template downloaded from https://start.vaadin.com to a database so you can replicate it to your own needs. This is not about the best practices (for `Vaadin`, `Spring` or `MySQL`) but to get you started fast.
 
 == 1. Get started with start.vaadin.com
 
-Start by downloading a starter project from https://start.vaadin.com – page. For this example get the default project with `MasterDetail` – view. Default project also has the `DashBoard` – view. Feel free to add new views and as please but make sure there the `MasterDetail` – view is there. Download the project with a `name` and `Java Group ID` you want. In this example project name is `databasemysqlexample` and the `Java Group ID` is `com.example.mysql`. Using the same helps if you want to copy-paste code or entire class but it is also a good exercise trying to figure needed things by yourself. 
+Start by downloading a starter project from https://start.vaadin.com – page. For this example get the default project with `MasterDetail` – view. Default project also has the `DashBoard` – view. Feel free to add new views as you please but make sure there the `MasterDetail` – view is there. Download the project with a `name` and `Java Group ID` you want. In this example project name is `databasemysqlexample` and the `Java Group ID` is `com.example.mysql`. Using the same helps if you want to copy-paste code or entire class but it is also a good exercise trying to figure needed things by yourself. 
 For the Technology Stack select `Spring Boot`. It is required for this tutorial. 
 
 == 2. Open the downloaded project in your favorite IDE
@@ -17,13 +17,13 @@ https://vaadin.com/tutorials/import-maven-project-intellij-idea +
 https://vaadin.com/tutorials/import-maven-project-eclipse +
 https://vaadin.com/tutorials/import-maven-project-netbeans
 
-At this point you probably want to get your brand new `Vaadin` project online. Once the project is open in the selected IDE you can run start it (since the nice people running https://start.vaadin.com have made the project ready-to-run). `Vaadin` application with `Spring Boot` can be run with `mvn spring-boot:run` – command or run as an Application. If you have `Maven` installed in the local computer just open the project folder root and type `mvn spring-boot:run`.
+At this point you probably want to get your brand new `Vaadin` project online. Once the project is open in the selected IDE you can start it (since the nice people running https://start.vaadin.com have made the project ready-to-run). `Vaadin` application with `Spring Boot` can be run with `mvn spring-boot:run` – command or run as an Application. If you have `Maven` installed in the local computer just open the project folder root and type `mvn spring-boot:run`.
 
 Alejandros tutorials (listed above) have quite extensive instructions on how to do this for each of the IDEs (check under title `Running Maven goals`). 
 
 NOTE: Before checking Alejandros tutorials: In the tutorials `Maven goal` is `jetty:run`, but since we use `Spring Boot` the `Maven goal` is `spring-boot:run`, NOT `jetty:run`. Follow the instructions but replace `jetty:run` with `spring-boot:run` and you should be set for success.
 
-If you run the application for a first time prepare to wait some time: `Vaadin` uses `npm` package system. Downside is that in the first run you have to download quite a lot of code from the internet (from `npm` repository). If you get bored during download you can have a look at why `Vaadin` uses `npm` (https://vaadin.com/blog/bower-and-npm-in-vaadin-14- and https://vaadin.com/blog/all-vaadin-components-are-now-available-on-npm ) 
+If you run the application for the first time prepare to wait some time: `Vaadin` uses `npm` package system. Downside is that in the first run you have to download quite a lot of code from the internet (from `npm` repository). If you get bored during download you can have a look at why `Vaadin` uses `npm` (https://vaadin.com/blog/bower-and-npm-in-vaadin-14- and https://vaadin.com/blog/all-vaadin-components-are-now-available-on-npm ) 
 
 Ok, now we assume that everything is downloaded and local web server has started with your brand new application. Console should show text lines something like this:
 ....
@@ -32,7 +32,7 @@ INFO 8152 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomca
 INFO 8152 --- [  restartedMain] c.e.m.application.spring.Application     : Started Application in 25.931 seconds (JVM running for 26.81)
 ....
 
-That means that the `Tomcat` webserver is up and running and offering your application in the address “http://localhost:8080”. Open web browser and go to that address. You should see your application there. Have a look, surf around, click some lists items and buttons and see what happens.
+That means that the `Tomcat` webserver is up and running and offering your application in the address http://localhost:8080. Open web browser and go to that address. You should see your application there. Have a look, surf around, click some lists items and buttons and see what happens.
 
 == 3. Database manager and setting up the database
 
@@ -80,7 +80,8 @@ Add dependencies to `POM.XML`:
 
 == 5. Preparing the database
 
-If you already have the needed database, user (with privileges), table with columns and the data, you can skip any or all of the following steps. After this tutorial when you start creating new views with data, you only need the table with columns and to grant the privileges for that user to that table. There is a way to grant all rights to the user but I’m not going to show how since it is a bit dangerous if you ever go live with the application. Do it with your own risk. 
+If you already have the needed database, user (with privileges), table with columns and the data, you can skip any or all of the following steps. After this tutorial when you start creating your own new views with data, you only need the table with columns and to grant the privileges for that user to that table. There is a way to grant all rights to the user but I’m not going to show how since it is a bit dangerous if you ever go live with the application. Do it with your own risk. 
+
 You need to be logged in to the Database manager (of your choice, command line or with GUI) as a `root` or similar `admin role` that has rights to create new users, databases and tables.
 
 Log in to the `database manager` as `admin` or `root`. +
@@ -130,7 +131,7 @@ If you see a list of employees inserted in the step above, you are ready with th
 
 == 6. Wiring the database to the application
 
-So far we have been doing mostly configurations. Now we can start coding. First start the application with instructions given above (if you need to refresh your memory more extensively check to chapter `Open the downloaded project in your favorite IDE` in this tutorial). 
+So far we have been doing mostly configurations. Now we can start coding. First start the application with instructions given above (if you need to refresh your memory more extensively check the chapter `Open the downloaded project in your favorite IDE` in this tutorial). 
 
 NOTE: You can use the command `mvn spring-boot:run` or `run as Application` (mainclass: `com.example.mysql.application.spring.Application` in this example). 
 
@@ -156,7 +157,8 @@ Don’t worry, all is not lost; that just means that some application is already
 When application starts (hopefully) use a browser and open http://localhost:8080/masterdetail address. +
 You should see a list of employees and their information details. At this moment list is still populated from code, not from the database.
 
-Following steps connect the view (more specifically the `Grid` element) to the database. +
+Follow the steps to connect the view (more specifically the `Grid` element) to the database:
+
 Open `MasterDetalView.java` - file in IDE: +
 Locate `afterNavigation` - method. In this method the `grid` (called `employees`) gets populated by a list of employees. +
 List of employees is currently fetched from the `BackendService` `service` object. 
@@ -201,7 +203,9 @@ public List<Employee> findAll() {
 }
 ....
 
-When the function `findAll` is called, it uses the `@Autowired` `jdbcTemplate` variable and executes a `SELECT` query. Query then returns the rows found and for each of them creates an instance of the `Employee` - class. Those are added to a list and returned to the calling party. Most of the work is done by `JdbcTemplate`. You need to just make sure that the `Employee` - class has a constructor matching the info fetch with a query and `rs.get<>` - methods. `Rowmapper` (doing the employees list for you) has methods like `getString`, `getDouble`, `getInt` and `getDate` that reflect the data received from database. +
+When the function `findAll` is called, it uses the `@Autowired` `jdbcTemplate` variable and executes a `SELECT` query. Query then returns the rows found and for each of them it creates an instance of the `Employee` - class. Those employees are added to a list and returned to the calling party. Most of the work is done by `JdbcTemplate`. You need to just make sure that the `Employee` - class has a constructor matching the info fetch with a query and read using the `rs.get<>` - methods. 
+
+NOTE: `Rowmapper` (doing the employees list for you) has methods like `getString`, `getDouble`, `getInt` and `getDate` that reflect the data received from database.
 For example if you have a datetime field in database, you probably better to use `getDate()` method instead of `getString()`.
 
 Now go back to the `MasterDetalView.java` - file in IDE: +
@@ -229,6 +233,9 @@ Now `employees` - grid should be populated with the data from database.
 
 Refresh the browser and check that this is the case. The longer list should now be replaced with just the three employees we added to the database. 
 Select a row from the list. `Form` - element next to the list should be populated automatically with the selected employee info. Now the employees list is connected to the database instead of hard coded list of employees. You can verify that by going to the `database manager` and adding some more lines with the `INSERT` – statement you already used. Those new lines should appear to the page after you refresh the window. 
+
+NOTE: If the list did not change there is a couple of things you can try to fix it. Go back to the IDE and make sure you have saved all the modified files. Make sure (from 
+the console view) that the server has re-started (it might take some time). If the application still shows old employees stop the server and restart the application.
 
 == 7. Saving an employee information
 
@@ -293,9 +300,9 @@ save.addClickListener(e -> {
 });
 ....
 
-NOTE: A constructor is a special method in the class that is run when an instance of that class is created. If you are not sure what a constructor is have a look from the internet or from a book
+NOTE: A constructor is a special method in the class that is run when an instance of that class is created. If you are not sure what a constructor is have a look from the internet or from a book. 
 
-This code means that when the `Save` button is clicked it runs the code `Notification.show("Not implemented");`. We are going to replace showing of the notification if actually saving (or inserting) the employees information to the database. Like this:
+This code means that when the `Save` button is clicked it runs the code `Notification.show("Not implemented");`. We are going to replace showing of the notification with actually saving (or inserting) the employees information to the database. Like this:
 
 ....
 save.addClickListener(e -> {
@@ -308,7 +315,7 @@ save.addClickListener(e -> {
 });
 ....
 
-This block of code uses the `binder` to get the employees information that is currently shown in the form with employee information (not the list, but the fields on the right side). Then it calls the `saveEmployee` method of the `EmployeeService` – class to save the employee. If the `saveEmployee` - method returns a value that is more than 0 we update the list of employees with `setItem` command. If the return value less than 0 a notification with a text `Save error` is shown to the user.
+This block of code uses the `binder` to get the employees information that is currently shown in the form with employee information (not the list, but the fields on the right side). Then it calls the `saveEmployee` - method of the `EmployeeService` – class to save the employee. If the `saveEmployee` - method returns a value that is more than 0 we update the list of employees with `setItem` command. Otherwise a notification with a text `Save error` is shown to the user.
 
 There is one more step you need to do: find the `populateForm` - method in the `MasterDetailView` - class. +
 Check that it exists and if yes change the following line of code:
@@ -355,15 +362,15 @@ Find the constructor of the `MasterDetailView` – class (we have discussed this
 binder.setBean(new Employee());
 ....
 
-This line of code binds a newly created employee to the input fields. If you want to initialize the default employee with values you can use the `Employee` - class constructor that takes first name, last name, email address and title as a parameter. Title has not been used during this tutorial at all but at this case you need to provide that also. As an exercise you can add a new constructor to `Employee` class without the title. If you decide to use the constructor with initial values as names and email when refreshing the browser you see the given values already in the input fields.
+This line of code binds a newly created employee to the input fields. If you want to initialize the default employee with values you can use the `Employee` - class constructor that takes first name, last name, email address and title as a parameter. Title has not been used during this tutorial at all but at this case you need to provide that also. As an exercise you can add a new constructor to `Employee` class without the title. If you decide to use the constructor with initial values as names and email address after you refresh the the browser you can see the given values already in the input fields.
 
-Now if you run the application, refresh the browser, enter last name, first name and email address and press save an employee with given information is created. Of course if you enter already existing email address then it is not inserted but updated. But you already knew this from before. 
+Now if you run the application, refresh the browser, enter last name, first name and email address and press `Save` - button an employee with given information is created. Of course if you enter already existing email address then it is not inserted but updated. But you already knew this from before. 
 
-Now we take a look at the second problem with inserting new employees. If you select an employee from the list and press save or clear the input fields are cleared. If you now try to add a new employee information and press save you get the same `null pointer exception`. Why is that? 
+Now we take a look at the second problem with inserting new employees. If you select an employee from the list and press save or clear the input fields are cleared. If you now try to add a new employee information and press the `save` - button you get the same `null pointer exception`. Why is that? 
 
-This is because when you hit `Clear` - button it calls the code `employees.asSingleSelect().clear()` that clears the selected values from the employees list. When that happens a line of code `populateForm(event.getValue())` gets called. Since the selected value is cleared by the first command `populateForm` method gets a parameter `null` (since nothing is selected). In `populateForm` method the code `binder.setBean(value);` sets binder to value of `null`. This is the same situation as we used to have when refreshing the page and starting to add an employee without first clicking a line in the list. Setting the binder to `null` happens also when you hit `Save` - button. The chain of commands is a bit longer but the end result is the same as with `Clear` button. 
+This is because when you hit `Clear` - button it calls the code `employees.asSingleSelect().clear()` that clears the selections from the employees list. When that happens a line of code `populateForm(event.getValue())` gets called. Since the selected value is cleared by the first command `populateForm` method gets a parameter `null` (since nothing is selected). In `populateForm` method the code `binder.setBean(value);` sets binder to value of `null`. This is the same situation as we used to have when refreshing the page and starting to add an employee without first clicking a line in the list. Setting the binder to `null` happens also when you hit `Save` - button. The chain of commands is a bit longer but the end result is the same as with the `Clear` - button. 
 
-We can prevent this in many ways. Again this tutorial is not about best practices but to show you how to get started fast. With this in mind we are going to use the following solution; since both our problems (pressing the `clear` - button and the `save` - button) lead us to the `populateForm` - method we will place the fix there. When the method is run we’ll check if the parameter `Employee value` is `null`. If it is not `null` we continue as before. If it is `null` then we will create an employee and bind that one. + Basically the same thing we did before in the constructor. Add the following code to the `populateForm` method:
+We can prevent this in many ways. Again this tutorial is not about best practices but to show you how to get started fast. With this in mind we are going to use the following solution; since both our problems (pressing the `clear` - button and the `save` - button) lead us to the `populateForm` - method we will place the fix there. When the method is run we’ll check if the parameter `Employee value` is `null`. If it is not `null` we continue as before. If it is `null` then we will create an employee and bind that one. Basically the same thing we did before in the constructor. Add the following code to the `populateForm` method:
 
 ....
 if ( value == null ) {
@@ -398,7 +405,7 @@ This deletes from database all the lines that have the same email address as the
 
 Now we have to place the delete button to the user interface. The correct place for the delete button can cause discussion among developers, designers and users. At this point we just place the button to the UI (user interface) and do not discuss the placing in any depth.
 
-Delete button should appear before the input fields in the right side of the screen. First add the button declaration as a variable to the `MasterDetailView` – class (the same way as `save` and `clear` buttons are done).
+Delete button should appear after the input fields in the right side of the screen. Same area where `Clean` and `Save` - buttons are. First add the button declaration as a variable to the `MasterDetailView` – class (the same way as `save` and `clear` buttons are done).
 
 ....
 private Button delete = new Button("Delete");
@@ -464,15 +471,16 @@ Fix is to check the query text to match the table and column names you created i
 If there is a problem with `application.properties` definitions you might get an exception:
 ....
 There was an exception while trying to navigate to 'masterdetail' with the exception message 'Failed to obtain JDBC Connection; nested exception is java.sql.SQLSyntaxErrorException: Unknown database 'dummydata2''
+....
 
 Problem is a wrong database name (is `dummydata2`, should be `dummydata`). Check the name of database you have created (or have already) and see that they match.
 
 Another one could be:
 ....
 There was an exception while trying to navigate to 'masterdetail' with the exception message 'Failed to obtain JDBC Connection; nested exception is java.sql.SQLException: Access denied for user 'dummydata2'@'localhost' (using password: YES)'
-.....
+....
 
 This can be caused by wrong username or password. +
-It can also be a case when the user does not have the correct privileges. +
+It can also be a case when the user does not have the correct privileges.
 
 In all the cases double check the steps and your code.  
