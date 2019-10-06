@@ -34,6 +34,23 @@ INFO 8152 --- [  restartedMain] c.e.m.application.spring.Application     : Start
 
 That means that the `Tomcat` webserver is up and running and offering your application in the address http://localhost:8080. Open web browser and go to that address. You should see your application there. Have a look, surf around, click some lists items and buttons and see what happens.
 
+Remember that Vaadin 14 requires Node 10.0+ installed. You can download node from the website (https://nodejs.org/en/download/) or install node by running the frontend-maven-plugin goal. If the application does not start and you see a message like the one below you need to install node. 
+
+....
+======================================================================================================
+Your installed 'node' version (8.2.1
+) is too old. Supported versions are 10.0+
+Please install a new one either:
+  - by following the https://nodejs.org/en/download/ guide to install it globally
+  - or by running the frontend-maven-plugin goal to install it in this project:
+  $ mvn com.github.eirslett:frontend-maven-plugin:1.7.6:install-node-and-npm -DnodeVersion="v11.6.0" 
+
+You can disable the version check using -Dvaadin.ignoreVersionChecks=true
+======================================================================================================
+....
+
+After node has been installed re-try starting the application.
+
 == 3. Database manager and setting up the database
 
 To wire `MySQL` to your application you need a `MySQL` database running locally or running online in cloud. `MySQL` is an `Oracle` product (https://www.mysql.com/). `MariaDB` is a free and open source drop-in replacement for `MySQL` (https://mariadb.org/). You can also get `MySQL` database from `Google` (https://cloud.google.com/sql/) or running as an add-on in `Heroku` (https://elements.heroku.com/search/addons?q=sql) just to mention a couple. If you need help with setting up a database server have a look at (for example) `MariaDB` instructions (https://mariadb.com/get-started-with-mariadb/).
@@ -334,11 +351,11 @@ Now we should be all clear to test the application. Remember to save every file 
 
 Now take another line from the list and change the names AND the email address (but use a completely new email address that is not already in the list). Then press `Save` -  button. A new line should appear the list. Now have a play with the list, select a line and change the email address to something that already is on the list but for another person.
 
-What happens when you change some else email address to match that one? You should see that the logic is not there for the user. Try to figure out why those things happens and how could you prevent that. Also selecting an employee from the list and then pressing `Clear` button empties the information of that employee from the list. It does not delete the employee or save the cleared data but not quite the outcome the end user would expect.
+What happens when you change some else email address to match that one? You should see that the logic is not there for the user. Try to figure out why those things happens and how could you prevent that. 
 
 == 8. Adding an employee information
 
-You might have noticed already that if you press the `Clear` - button and then try to enter completely new employee information this does not work. Same thing happens when reloading the page and start inserting employee info without first selecting an employee. Why is that?
+You might have noticed already that if you press the `Cancel` - button and then try to enter completely new employee information this does not work. Same thing happens when reloading the page and start inserting employee info without first selecting an employee. Why is that?
 
 So, `Vaadin` helps you out with using the binders. You bind the employee information input fields to that particular employee. You can return the information from all the fields with a simple `binder.getBean` command instead of having to ask the value from each and every field separately. The application binds the employee to input fields when you select it from the list. This is done in the constructor of the `MasterDetailView` - class with the following line:
 
@@ -366,11 +383,11 @@ This line of code binds a newly created employee to the input fields. If you wan
 
 Now if you run the application, refresh the browser, enter last name, first name and email address and press `Save` - button an employee with given information is created. Of course if you enter already existing email address then it is not inserted but updated. But you already knew this from before. 
 
-Now we take a look at the second problem with inserting new employees. If you select an employee from the list and press save or clear the input fields are cleared. If you now try to add a new employee information and press the `save` - button you get the same `null pointer exception`. Why is that? 
+Now we take a look at the second problem with inserting new employees. If you select an employee from the list and press `Save` or `Cancel` - button the input fields are cleared. If you now try to add a new employee information and press the `save` - button you get the same `null pointer exception`. Why is that? 
 
-This is because when you hit `Clear` - button it calls the code `employees.asSingleSelect().clear()` that clears the selections from the employees list. When that happens a line of code `populateForm(event.getValue())` gets called. Since the selected value is cleared by the first command `populateForm` method gets a parameter `null` (since nothing is selected). In `populateForm` method the code `binder.setBean(value);` sets binder to value of `null`. This is the same situation as we used to have when refreshing the page and starting to add an employee without first clicking a line in the list. Setting the binder to `null` happens also when you hit `Save` - button. The chain of commands is a bit longer but the end result is the same as with the `Clear` - button. 
+This is because when you hit `Cancel` - button it calls the code `employees.asSingleSelect().clear()` that clears the selections from the employees list. When that happens a line of code `populateForm(event.getValue())` gets called. Since the selected value is cleared by the first command `populateForm` method gets a parameter `null` (since nothing is selected). In `populateForm` method the code `binder.setBean(value);` sets binder to value of `null`. This is the same situation as we used to have when refreshing the page and starting to add an employee without first clicking a line in the list. Setting the binder to `null` happens also when you hit `Save` - button. The chain of commands is a bit longer but the end result is the same as with the `Cancel` - button. 
 
-We can prevent this in many ways. Again this tutorial is not about best practices but to show you how to get started fast. With this in mind we are going to use the following solution; since both our problems (pressing the `clear` - button and the `save` - button) lead us to the `populateForm` - method we will place the fix there. When the method is run we’ll check if the parameter `Employee value` is `null`. If it is not `null` we continue as before. If it is `null` then we will create an employee and bind that one. Basically the same thing we did before in the constructor. Add the following code to the `populateForm` method:
+We can prevent this in many ways. Again this tutorial is not about best practices but to show you how to get started fast. With this in mind we are going to use the following solution; since both our problems (pressing the `Cancel` - button and the `save` - button) lead us to the `populateForm` - method we will place the fix there. When the method is run we’ll check if the parameter `Employee value` is `null`. If it is not `null` we continue as before. If it is `null` then we will create an employee and bind that one. Basically the same thing we did before in the constructor. Add the following code to the `populateForm` method:
 
 ....
 if ( value == null ) {
@@ -387,7 +404,7 @@ Now the binder should always have an employee bean bound to it and those `null p
 
 == 9. Removing an employee
 
-CRUD stands for Create, Read, Update and Delete. We already have Create (insert), Read (select) and Update (update) but we are missing Delete. This requires us the place a new button to the user interface and creating a couple of methods to delete something from the database.
+CRUD stands for Create, Read, Update and Delete. We already have Create (insert), Read (select) and Update (update) but we are missing Delete. This requires us to place a new button to the user interface and creating a couple of methods to delete something from the database.
 
 First we start with the needed methods. Since we have `saveEmployee` - method we could also have `deleteEmployee` - method. Open the `EmployeeService` - class and add the following method:
 
@@ -405,7 +422,7 @@ This deletes from database all the lines that have the same email address as the
 
 Now we have to place the delete button to the user interface. The correct place for the delete button can cause discussion among developers, designers and users. At this point we just place the button to the UI (user interface) and do not discuss the placing in any depth.
 
-Delete button should appear after the input fields in the right side of the screen. Same area where `Clean` and `Save` - buttons are. First add the button declaration as a variable to the `MasterDetailView` – class (the same way as `save` and `clear` buttons are done).
+Delete button should appear after the input fields in the right side of the screen. Same area where `Clean` and `Save` - buttons are. First add the button declaration as a variable to the `MasterDetailView` – class (the same way as `save` and `Cancel` buttons are done).
 
 ....
 private Button delete = new Button("Delete");
